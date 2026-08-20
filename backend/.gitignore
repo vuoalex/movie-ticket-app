@@ -1,0 +1,11 @@
+# Dependencies
+node_modules/
+
+# Environment variables
+.env
+
+# Database
+*.db
+
+# Exercise code (not part of the project)
+/exercises
