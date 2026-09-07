@@ -12,7 +12,8 @@ export function createConnection(
   CREATE TABLE IF NOT EXISTS tickets (
     id INTEGER PRIMARY KEY,
     code TEXT NOT NULL UNIQUE,
-    used INTEGER NOT NULL DEFAULT 0,
+    is_redeemed INTEGER NOT NULL DEFAULT 0,
+    redeemed_at TEXT,
     created_at TEXT NOT NULL DEFAULT (datetime('now'))
   )
 `);
