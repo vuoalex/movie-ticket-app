@@ -1,6 +1,21 @@
 import db from "../config/db.js";
 import { generateCode } from "../utils/ticketCode.js";
 
+export function createTicket() {
+  const code = generateUniqueCode();
+
+  return db
+    .prepare("INSERT INTO tickets (code) VALUES (?) RETURNING *")
+    .get(code);
+}
+
+export function getAllTickets() {
+  return db.prepare("SELECT * FROM tickets").all();
+}
+
+
+// ----- Helpers -----
+
 function codeExists(code) {
   return (
     db.prepare("SELECT id FROM tickets WHERE code = ?").get(code) !== undefined
@@ -19,12 +34,4 @@ function generateUniqueCode() {
   }
 
   throw new Error("Could not generate a unique ticket code");
-}
-
-export function createTicket() {
-  const code = generateUniqueCode();
-
-  return db
-    .prepare("INSERT INTO tickets (code) VALUES (?) RETURNING *")
-    .get(code);
 }
