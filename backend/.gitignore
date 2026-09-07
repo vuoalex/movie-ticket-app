@@ -6,6 +6,8 @@ node_modules/
 
 # Database
 *.db
+*.db-wal
+*.db-shm
 
 # Exercise code (not part of the project)
 /exercises
