@@ -5,6 +5,6 @@ const app = express();
 
 app.use(express.json());
 
-app.use("/tickets", ticketRoutes);
+app.use("/api/tickets", ticketRoutes);
 
 export default app;
