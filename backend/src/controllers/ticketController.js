@@ -5,51 +5,29 @@ import {
   redeemTicket,
   deleteTicket,
 } from "../services/ticketService.js";
+import { AppError } from "../utils/AppError.js";
 
 export function create(req, res) {
-  const ticket = createTicket();
-  res.status(201).json(ticket);
+  res.status(201).json(createTicket());
 }
 
 export function getAll(req, res) {
-  const tickets = getAllTickets();
-  res.status(200).json(tickets);
+  res.json(getAllTickets());
 }
 
 export function getById(req, res) {
   const ticket = getTicketById(req.params.id);
 
-  if (!ticket) {
-    return res.status(404).json({ error: "Ticket not found" });
-  }
+  if (!ticket) throw new AppError("Ticket not found", 404);
 
   res.json(ticket);
 }
 
 export function redeem(req, res) {
-  const result = redeemTicket(req.params.id);
-
-  if (result.error === "NOT_FOUND") {
-    return res.status(404).json({ error: "Ticket not found" });
-  }
-
-  if (result.error === "ALREADY_REDEEMED") {
-    return res.status(409).json({ error: "Ticket has already been redeemed" });
-  }
-
-  res.json(result.ticket);
+  res.json(redeemTicket(req.params.id));
 }
 
 export function remove(req, res) {
-  const result = deleteTicket(req.params.id);
-
-  if (result.error === "NOT_FOUND") {
-    return res.status(404).json({ error: "Ticket not found" });
-  }
-
-  if (result.error === "ALREADY_REDEEMED") {
-    return res.status(409).json({ error: "Cannot delete a redeemed ticket" });
-  }
-
+  deleteTicket(req.params.id);
   res.status(204).end();
 }

@@ -1,5 +1,6 @@
 import db from "../config/db.js";
 import { generateCode } from "../utils/ticketCode.js";
+import { AppError } from "../utils/AppError.js";
 
 export function createTicket() {
   const code = generateUniqueCode();
@@ -20,15 +21,11 @@ export function getTicketById(id) {
 export function redeemTicket(id) {
   const ticket = getTicketById(id);
 
-  if (!ticket) {
-    return { error: "NOT_FOUND" };
-  }
+  if (!ticket) throw new AppError("Ticket not found", 404);
+  if (ticket.is_redeemed)
+    throw new AppError("Ticket has already been redeemed", 409);
 
-  if (ticket.is_redeemed) {
-    return { error: "ALREADY_REDEEMED" };
-  }
-
-  const updated = db
+  return db
     .prepare(
       `UPDATE tickets
        SET is_redeemed = 1, redeemed_at = datetime('now')
@@ -36,24 +33,16 @@ export function redeemTicket(id) {
        RETURNING *`,
     )
     .get(id);
-
-  return { ticket: updated };
 }
 
 export function deleteTicket(id) {
   const ticket = getTicketById(id);
 
-  if (!ticket) {
-    return { error: "NOT_FOUND" };
-  }
-
-  if (ticket.is_redeemed) {
-    return { error: "ALREADY_REDEEMED" };
-  }
+  if (!ticket) throw new AppError("Ticket not found", 404);
+  if (ticket.is_redeemed)
+    throw new AppError("Cannot delete a redeemed ticket", 409);
 
   db.prepare("DELETE FROM tickets WHERE id = ?").run(id);
-
-  return { success: true };
 }
 
 // ----- Helpers -----
