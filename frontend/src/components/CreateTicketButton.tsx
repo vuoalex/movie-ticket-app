@@ -1,8 +1,8 @@
-const API_URL = 'http://localhost:3000/api/tickets';
+import { createTicket } from '../api/tickets';
 
 function CreateTicketButton() {
   async function handleClick() {
-    await fetch(API_URL, { method: 'POST' });
+    await createTicket();
   }
 
   return <button onClick={handleClick}>Create ticket</button>;
