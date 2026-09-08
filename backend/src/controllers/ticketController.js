@@ -3,6 +3,7 @@ import {
   getAllTickets,
   getTicketById,
   redeemTicket,
+  deleteTicket,
 } from "../services/ticketService.js";
 
 export function create(req, res) {
@@ -37,4 +38,18 @@ export function redeem(req, res) {
   }
 
   res.json(result.ticket);
+}
+
+export function remove(req, res) {
+  const result = deleteTicket(req.params.id);
+
+  if (result.error === "NOT_FOUND") {
+    return res.status(404).json({ error: "Ticket not found" });
+  }
+
+  if (result.error === "ALREADY_REDEEMED") {
+    return res.status(409).json({ error: "Cannot delete a redeemed ticket" });
+  }
+
+  res.status(204).end();
 }

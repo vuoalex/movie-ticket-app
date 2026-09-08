@@ -84,3 +84,33 @@ describe("PATCH /api/tickets/:id/redeem", () => {
     expect(response.status).toBe(404);
   });
 });
+
+describe("DELETE /api/tickets/:id", () => {
+  test("deletes an unused ticket", async () => {
+    const created = await request(app).post("/api/tickets");
+    const { id } = created.body;
+
+    const response = await request(app).delete(`/api/tickets/${id}`);
+
+    expect(response.status).toBe(204);
+
+    const check = await request(app).get(`/api/tickets/${id}`);
+    expect(check.status).toBe(404);
+  });
+
+  test("returns 409 when the ticket is redeemed", async () => {
+    const created = await request(app).post("/api/tickets");
+    const { id } = created.body;
+
+    await request(app).patch(`/api/tickets/${id}/redeem`);
+    const response = await request(app).delete(`/api/tickets/${id}`);
+
+    expect(response.status).toBe(409);
+  });
+
+  test("returns 404 when the ticket does not exist", async () => {
+    const response = await request(app).delete("/api/tickets/999999");
+
+    expect(response.status).toBe(404);
+  });
+});

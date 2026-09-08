@@ -40,6 +40,22 @@ export function redeemTicket(id) {
   return { ticket: updated };
 }
 
+export function deleteTicket(id) {
+  const ticket = getTicketById(id);
+
+  if (!ticket) {
+    return { error: "NOT_FOUND" };
+  }
+
+  if (ticket.is_redeemed) {
+    return { error: "ALREADY_REDEEMED" };
+  }
+
+  db.prepare("DELETE FROM tickets WHERE id = ?").run(id);
+
+  return { success: true };
+}
+
 // ----- Helpers -----
 
 function codeExists(code) {
