@@ -1,17 +1,19 @@
 import express from "express";
+import cors from "cors";
 import ticketRoutes from "./routes/ticketRoutes.js";
 import { errorHandler } from "./middleware/errorMiddleware.js";
-import cors from "cors";
+
+const CORS_ORIGIN = process.env.CORS_ORIGIN || "http://localhost:5173";
 
 const app = express();
 
-app.use(express.json());
-
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: CORS_ORIGIN,
   }),
 );
+
+app.use(express.json());
 
 app.use("/api/tickets", ticketRoutes);
 
