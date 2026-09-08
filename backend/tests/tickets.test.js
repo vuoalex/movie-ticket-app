@@ -55,3 +55,32 @@ describe("GET /api/tickets/:id", () => {
     expect(response.status).toBe(404);
   });
 });
+
+describe("PATCH /api/tickets/:id/redeem", () => {
+  test("redeems an unused ticket", async () => {
+    const created = await request(app).post("/api/tickets");
+    const { id } = created.body;
+
+    const response = await request(app).patch(`/api/tickets/${id}/redeem`);
+
+    expect(response.status).toBe(200);
+    expect(response.body.is_redeemed).toBe(1);
+    expect(response.body.redeemed_at).not.toBeNull();
+  });
+
+  test("returns 409 when the ticket is already redeemed", async () => {
+    const created = await request(app).post("/api/tickets");
+    const { id } = created.body;
+
+    await request(app).patch(`/api/tickets/${id}/redeem`);
+    const response = await request(app).patch(`/api/tickets/${id}/redeem`);
+
+    expect(response.status).toBe(409);
+  });
+
+  test("returns 404 when the ticket does not exist", async () => {
+    const response = await request(app).patch("/api/tickets/999999/redeem");
+
+    expect(response.status).toBe(404);
+  });
+});

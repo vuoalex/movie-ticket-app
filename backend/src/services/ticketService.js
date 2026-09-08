@@ -17,6 +17,29 @@ export function getTicketById(id) {
   return db.prepare("SELECT * FROM tickets WHERE id = ?").get(id);
 }
 
+export function redeemTicket(id) {
+  const ticket = getTicketById(id);
+
+  if (!ticket) {
+    return { error: "NOT_FOUND" };
+  }
+
+  if (ticket.is_redeemed) {
+    return { error: "ALREADY_REDEEMED" };
+  }
+
+  const updated = db
+    .prepare(
+      `UPDATE tickets
+       SET is_redeemed = 1, redeemed_at = datetime('now')
+       WHERE id = ?
+       RETURNING *`,
+    )
+    .get(id);
+
+  return { ticket: updated };
+}
+
 // ----- Helpers -----
 
 function codeExists(code) {
