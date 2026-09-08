@@ -17,3 +17,13 @@ export async function createTicket(): Promise<Ticket> {
 
   return response.json();
 }
+
+export async function getTickets(): Promise<Ticket[]> {
+  const response = await fetch(API_URL);
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch tickets');
+  }
+
+  return response.json();
+}
