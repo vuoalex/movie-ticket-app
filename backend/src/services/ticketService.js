@@ -13,6 +13,9 @@ export function getAllTickets() {
   return db.prepare("SELECT * FROM tickets").all();
 }
 
+export function getTicketById(id) {
+  return db.prepare("SELECT * FROM tickets WHERE id = ?").get(id);
+}
 
 // ----- Helpers -----
 

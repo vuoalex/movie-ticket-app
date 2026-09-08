@@ -37,3 +37,21 @@ describe("GET /api/tickets", () => {
     expect(response.body).toHaveLength(2);
   });
 });
+
+describe("GET /api/tickets/:id", () => {
+  test("returns a ticket by id", async () => {
+    const created = await request(app).post("/api/tickets");
+    const { id } = created.body;
+
+    const response = await request(app).get(`/api/tickets/${id}`);
+
+    expect(response.status).toBe(200);
+    expect(response.body.id).toBe(id);
+  });
+
+  test("returns 404 when the ticket does not exist", async () => {
+    const response = await request(app).get("/api/tickets/999999");
+
+    expect(response.status).toBe(404);
+  });
+});
