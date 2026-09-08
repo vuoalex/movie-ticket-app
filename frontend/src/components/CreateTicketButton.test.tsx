@@ -22,7 +22,7 @@ describe('CreateTicketButton', () => {
     });
     vi.stubGlobal('fetch', fetchMock);
 
-    render(<CreateTicketButton />);
+    render(<CreateTicketButton onCreated={vi.fn()} />);
     await userEvent.click(screen.getByRole('button', { name: /create ticket/i }));
 
     expect(fetchMock).toHaveBeenCalledWith(

@@ -1,13 +1,10 @@
-import { useEffect, useState } from 'react';
-import { getTickets, type Ticket } from '../api/tickets';
+import { type Ticket } from '../api/tickets';
 
-function TicketList() {
-  const [tickets, setTickets] = useState<Ticket[]>([]);
+interface TicketListProps {
+  tickets: Ticket[];
+}
 
-  useEffect(() => {
-    getTickets().then(setTickets);
-  }, []);
-
+function TicketList({ tickets }: TicketListProps) {
   return (
     <ul>
       {tickets.map((ticket) => (
