@@ -1,5 +1,10 @@
 import { useCallback, useEffect, useState } from 'react';
-import { getTickets, type Ticket } from './api/tickets';
+import {
+  deleteTicket,
+  getTickets,
+  redeemTicket,
+  type Ticket,
+} from './api/tickets';
 import CreateTicketButton from './components/CreateTicketButton';
 import TicketList from './components/TicketList';
 
@@ -14,11 +19,25 @@ function App() {
     loadTickets();
   }, [loadTickets]);
 
+  async function handleRedeem(id: number) {
+    await redeemTicket(id);
+    loadTickets();
+  }
+
+  async function handleDelete(id: number) {
+    await deleteTicket(id);
+    loadTickets();
+  }
+
   return (
     <>
       <h1>Movie Tickets</h1>
       <CreateTicketButton onCreated={loadTickets} />
-      <TicketList tickets={tickets} />
+      <TicketList
+        tickets={tickets}
+        onRedeem={handleRedeem}
+        onDelete={handleDelete}
+      />
     </>
   );
 }

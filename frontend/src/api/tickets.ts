@@ -27,3 +27,21 @@ export async function getTickets(): Promise<Ticket[]> {
 
   return response.json();
 }
+
+export async function redeemTicket(id: number): Promise<Ticket> {
+  const response = await fetch(`${API_URL}/${id}/redeem`, { method: 'PATCH' });
+
+  if (!response.ok) {
+    throw new Error('Failed to redeem ticket');
+  }
+
+  return response.json();
+}
+
+export async function deleteTicket(id: number): Promise<void> {
+  const response = await fetch(`${API_URL}/${id}`, { method: 'DELETE' });
+
+  if (!response.ok) {
+    throw new Error('Failed to delete ticket');
+  }
+}
