@@ -103,20 +103,20 @@ Both the backend and frontend were built test-first, following red-green-refacto
 
 ### Backend — `POST /api/tickets`
 
-1. `bb04641` — `test: add failing test on ticket creation`   
+1. [`bb04641`](https://github.com/vuoalex/movie-ticket-app/commit/bb04641) — `test: add failing test on ticket creation`   
 No route existed yet, so Express returned 404 where the test expected 201.
-2. `b78fc12` — `feat: add POST /tickets endpoint`   
+2. [`b78fc12`](https://github.com/vuoalex/movie-ticket-app/commit/b78fc12) — `feat: add POST /tickets endpoint`   
 Wired through route → controller → service. Test passes.
-3. `87e8562` — `test: use memory db for tests`   
+3. [`87e8562`](https://github.com/vuoalex/movie-ticket-app/commit/87e8562) — `test: use memory db for tests`   
 The tests were writing to the real database, so `vitest.config.js` now points them to an in-memory database and tests now start from a clean table.
 
 ### Frontend — create ticket
 
-1. `b55a718` — `test: add failing test for create ticket button`   
+1. [`b55a718`](https://github.com/vuoalex/movie-ticket-app/commit/b55a718) — `test: add failing test for create ticket button`   
 The button existed but had no click handler, so no request was ever made.
-2. `161c441` — `feat: post to the tickets API when button is clicked`   
+2. [`161c441`](https://github.com/vuoalex/movie-ticket-app/commit/161c441) — `feat: post to the tickets API when button is clicked`   
 The click handler. Test passes.
-3. `de9789f` — `refactor: move fetch logic out of the component`   
+3. [`de9789f`](https://github.com/vuoalex/movie-ticket-app/commit/de9789f) — `refactor: move fetch logic out of the component`   
 The API calls moved into their own module. Behaviour unchanged, test still passes.
 
 ## Testing
