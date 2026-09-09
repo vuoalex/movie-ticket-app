@@ -4,6 +4,8 @@ A small fullstack ticket system, built as an assignment for an API-development N
 
 The focus of the assignment is CORS. The frontend and the backend run on different ports, so every request from the browser is cross-origin.
 
+<img width="1711" height="833" alt="Ticket list showing redeemed and unused tickets" src="https://github.com/user-attachments/assets/befdedcb-6f2c-4970-b33d-4b6c8961d799" />
+
 ## Tech stack
 
 **Backend** — Node.js, Express 5, better-sqlite3, ES modules. Tested with Vitest and Supertest.
